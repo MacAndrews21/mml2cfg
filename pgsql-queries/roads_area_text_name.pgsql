@@ -1,2 +1,6 @@
-select way, highway, name       from planet_osm_polygon       where highway='pedestrian'         and name is not null      
-
+SELECT way AS __geometry__ 
+        ,  highway 
+        ,  name 
+FROM planet_osm_polygon 
+WHERE highway='pedestrian' 
+    AND name IS NOT NULL

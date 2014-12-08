@@ -1,2 +1,12 @@
-select way,highway,ref,char_length(ref) as length       from planet_osm_roads       where highway in ('motorway','trunk','primary','secondary')         and ref is not null         and char_length(ref) between 1 and 8      
-
+SELECT way AS __geometry__ 
+        , highway 
+        , ref 
+        , char_length(ref) AS length 
+FROM planet_osm_roads 
+WHERE highway IN ('motorway' 
+        , 'trunk' 
+        , 'primary' 
+        , 'secondary') 
+    AND ref IS NOT NULL 
+    AND char_length(ref) BETWEEN 1 
+    AND 8

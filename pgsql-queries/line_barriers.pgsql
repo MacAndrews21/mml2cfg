@@ -1,2 +1,4 @@
-select way, barrier from planet_osm_line where barrier is not null
-
+SELECT way AS __geometry__ 
+        ,  barrier 
+FROM planet_osm_line 
+WHERE barrier IS NOT NULL

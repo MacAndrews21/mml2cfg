@@ -1,2 +1,17 @@
-select way,coalesce(highway,aeroway) as highway,ref,char_length(ref) as length,       case when bridge in ('yes','true','1') then 'yes'::text else 'no'::text end as bridge       from planet_osm_line       where (highway is not null or aeroway is not null)         and ref is not null         and char_length(ref) between 1 and 8      
-
+SELECT way AS __geometry__ 
+        , 
+COALESCE(highway 
+        , aeroway) AS highway 
+        , ref 
+        , char_length(ref) AS length 
+        ,  CASE
+  WHEN bridge IN ('yes' 
+        , 'true' 
+        , '1')
+  THEN 'yes'::text else 'no'::text end AS bridge 
+FROM planet_osm_line 
+WHERE (highway IS NOT NULL 
+    OR aeroway IS NOT NULL) 
+    AND ref IS NOT NULL 
+    AND char_length(ref) BETWEEN 1 
+    AND 8

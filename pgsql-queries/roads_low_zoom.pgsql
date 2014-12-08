@@ -1,2 +1,29 @@
-select way,coalesce(('highway_' || (case when highway is not null then highway else null end)), ('railway_' || (case when (railway='rail' and service in ('spur','siding','yard'))  then 'INT-spur-siding-yard' when railway in ('rail','tram','light_rail','funicular','narrow_gauge') then railway else null end))) as feature,tunnel       from planet_osm_roads       where highway is not null          or (railway is not null and railway!='preserved' and (service is null or service not in ('spur','siding','yard')))       order by z_order      
-
+SELECT way AS __geometry__ 
+        , 
+COALESCE(('highway_' || 
+  (CASE
+  WHEN highway IS NOT NULL
+  THEN highway else NULL end)) 
+        ,  ('railway_' || 
+  (CASE
+  WHEN (railway='rail' 
+    AND service IN ('spur' 
+        , 'siding' 
+        , 'yard'))
+  THEN 'INT-spur-siding-yard'
+  WHEN railway IN ('rail' 
+        , 'tram' 
+        , 'light_rail' 
+        , 'funicular' 
+        , 'narrow_gauge')
+  THEN railway else NULL end))) AS feature 
+        , tunnel 
+FROM planet_osm_roads 
+WHERE highway IS NOT NULL 
+    OR (railway IS NOT NULL 
+    AND railway!='preserved' 
+    AND (service IS NULL 
+    OR service NOT IN ('spur' 
+        , 'siding' 
+        , 'yard'))) 
+ORDER BY z_order

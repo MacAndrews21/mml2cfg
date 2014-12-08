@@ -1,2 +1,6 @@
-select way,man_made from planet_osm_line where man_made in ('pier','breakwater','groyne')
-
+SELECT way AS __geometry__ 
+        , man_made 
+FROM planet_osm_line 
+WHERE man_made IN ('pier' 
+        , 'breakwater' 
+        , 'groyne')

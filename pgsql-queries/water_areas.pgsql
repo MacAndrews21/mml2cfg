@@ -1,2 +1,21 @@
-select way,"natural",waterway,landuse,name      from planet_osm_polygon      where (waterway in ('dock','mill_pond','riverbank','canal')         or landuse in ('reservoir','water','basin')         or "natural" in ('lake','water','land','glacier','mud'))         and building is null      order by z_order,way_area desc      
-
+SELECT way AS __geometry__ 
+        , "natural" 
+        , waterway 
+        , landuse 
+        , name 
+FROM planet_osm_polygon 
+WHERE (waterway IN ('dock' 
+        , 'mill_pond' 
+        , 'riverbank' 
+        , 'canal') 
+    OR landuse IN ('reservoir' 
+        , 'water' 
+        , 'basin') 
+    OR "natural" IN ('lake' 
+        , 'water' 
+        , 'land' 
+        , 'glacier' 
+        , 'mud')) 
+    AND building IS NULL 
+ORDER BY z_order 
+        , way_area DESC

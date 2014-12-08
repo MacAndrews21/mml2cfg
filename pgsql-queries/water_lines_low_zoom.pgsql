@@ -1,2 +1,4 @@
-select way,waterway      from planet_osm_line      where waterway='river'      
-
+SELECT way AS __geometry__ 
+        , waterway 
+FROM planet_osm_line 
+WHERE waterway='river'

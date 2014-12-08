@@ -1,2 +1,3 @@
-select way from planet_osm_line where route='ferry' 
-
+SELECT way AS __geometry__ 
+FROM planet_osm_line 
+WHERE route='ferry'

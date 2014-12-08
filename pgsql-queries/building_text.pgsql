@@ -1,2 +1,8 @@
-select name, way, way_area from planet_osm_polygon where building is not null  and building not in ('no','station','supermarket')
-
+SELECT name 
+        ,  way AS __geometry__ 
+        ,  way_area 
+FROM planet_osm_polygon 
+WHERE building IS NOT NULL 
+    AND building NOT IN ('no' 
+        , 'station' 
+        , 'supermarket')

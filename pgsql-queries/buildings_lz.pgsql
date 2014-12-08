@@ -1,2 +1,11 @@
-select way,building,railway,amenity from planet_osm_polygon       where railway='station'          or building in ('station','supermarket')          or amenity='place_of_worship'       order by z_order,way_area desc
-
+SELECT way AS __geometry__ 
+        , building 
+        , railway 
+        , amenity 
+FROM planet_osm_polygon 
+WHERE railway='station' 
+    OR building IN ('station' 
+        , 'supermarket') 
+    OR amenity='place_of_worship' 
+ORDER BY z_order 
+        , way_area DESC

@@ -1,2 +1,7 @@
-select way,place,name,ref       from planet_osm_point       where place in ('country','state')      
-
+SELECT way AS __geometry__ 
+        , place 
+        , name 
+        , ref 
+FROM planet_osm_point 
+WHERE place IN ('country' 
+        , 'state')

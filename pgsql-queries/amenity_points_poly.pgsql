@@ -1,2 +1,36 @@
-select way,amenity,shop,tourism,highway,man_made,access,religion,waterway,lock,historic,leisure      from planet_osm_polygon      where amenity is not null         or shop is not null         or tourism in ('alpine_hut','camp_site','picnic_site','caravan_site','guest_house','hostel','hotel','motel','museum','viewpoint','bed_and_breakfast','information','chalet')         or highway in ('bus_stop','traffic_signals')         or man_made in ('mast','water_tower')         or historic in ('memorial','archaeological_site')         or leisure in ('playground', 'picnic_table')      
-
+SELECT way AS __geometry__ 
+        , amenity 
+        , shop 
+        , tourism 
+        , highway 
+        , man_made 
+        , access 
+        , religion 
+        , waterway 
+        , lock 
+        , historic 
+        , leisure 
+FROM planet_osm_polygon 
+WHERE amenity IS NOT NULL 
+    OR shop IS NOT NULL 
+    OR tourism IN ('alpine_hut' 
+        , 'camp_site' 
+        , 'picnic_site' 
+        , 'caravan_site' 
+        , 'guest_house' 
+        , 'hostel' 
+        , 'hotel' 
+        , 'motel' 
+        , 'museum' 
+        , 'viewpoint' 
+        , 'bed_and_breakfast' 
+        , 'information' 
+        , 'chalet') 
+    OR highway IN ('bus_stop' 
+        , 'traffic_signals') 
+    OR man_made IN ('mast' 
+        , 'water_tower') 
+    OR historic IN ('memorial' 
+        , 'archaeological_site') 
+    OR leisure IN ('playground' 
+        ,  'picnic_table')

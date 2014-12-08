@@ -1,2 +1,8 @@
-select way,"natural"      from planet_osm_polygon      where "natural" in ('marsh','wetland') and building is null      order by z_order,way_area desc      
-
+SELECT way AS __geometry__ 
+        , "natural" 
+FROM planet_osm_polygon 
+WHERE "natural" IN ('marsh' 
+        , 'wetland') 
+    AND building IS NULL 
+ORDER BY z_order 
+        , way_area DESC

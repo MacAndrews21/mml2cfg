@@ -1,2 +1,3 @@
-select way from planet_osm_line where "power"='minor_line'
-
+SELECT way AS __geometry__ 
+FROM planet_osm_line 
+WHERE "power"='minor_line'

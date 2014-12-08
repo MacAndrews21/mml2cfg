@@ -1,2 +1,3 @@
-select way from planet_osm_polygon where "historic"='castle_walls'
-
+SELECT way AS __geometry__ 
+FROM planet_osm_polygon 
+WHERE "historic"='castle_walls'

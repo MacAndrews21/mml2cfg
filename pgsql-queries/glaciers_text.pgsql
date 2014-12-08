@@ -1,2 +1,7 @@
-select way,name,way_area      from planet_osm_polygon      where "natural"='glacier' and building is null      order by way_area desc      
-
+SELECT way AS __geometry__ 
+        , name 
+        , way_area 
+FROM planet_osm_polygon 
+WHERE "natural"='glacier' 
+    AND building IS NULL 
+ORDER BY way_area DESC

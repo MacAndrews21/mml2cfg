@@ -1,2 +1,8 @@
-select way,way_area,name,boundary from planet_osm_polygon where (boundary='national_park' or leisure='nature_reserve') and building is null
-
+SELECT way AS __geometry__ 
+        , way_area 
+        , name 
+        , boundary 
+FROM planet_osm_polygon 
+WHERE (boundary='national_park' 
+    OR leisure='nature_reserve') 
+    AND building IS NULL

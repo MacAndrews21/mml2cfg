@@ -1,2 +1,8 @@
-select way,place,name      from planet_osm_point      where place in ('city','town')        and (capital is null or capital != 'yes')      
-
+SELECT way AS __geometry__ 
+        , place 
+        , name 
+FROM planet_osm_point 
+WHERE place IN ('city' 
+        , 'town') 
+    AND (capital IS NULL 
+    OR capital != 'yes')

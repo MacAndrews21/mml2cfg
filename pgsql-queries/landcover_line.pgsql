@@ -1,2 +1,3 @@
-select wayfrom planet_osm_linewhere man_made='cutline'
-
+SELECT way AS __geometry__ 
+FROM planet_osm_line 
+WHERE man_made='cutline'

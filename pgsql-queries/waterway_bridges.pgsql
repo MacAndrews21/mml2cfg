@@ -1,2 +1,9 @@
-select way,name from planet_osm_line where waterway='canal' and bridge in ('yes','true','1','aqueduct') order by z_order
-
+SELECT way AS __geometry__ 
+        , name 
+FROM planet_osm_line 
+WHERE waterway='canal' 
+    AND bridge IN ('yes' 
+        , 'true' 
+        , '1' 
+        , 'aqueduct') 
+ORDER BY z_order

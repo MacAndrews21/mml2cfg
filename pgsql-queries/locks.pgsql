@@ -1,2 +1,4 @@
-select way,waterway from planet_osm_point where waterway='lock_gate'
-
+SELECT way AS __geometry__ 
+        , waterway 
+FROM planet_osm_point 
+WHERE waterway='lock_gate'

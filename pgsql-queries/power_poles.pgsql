@@ -1,2 +1,3 @@
-select way from planet_osm_point where power='pole'
-
+SELECT way AS __geometry__ 
+FROM planet_osm_point 
+WHERE power='pole'

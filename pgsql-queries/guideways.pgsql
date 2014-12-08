@@ -1,2 +1,5 @@
-select way from planet_osm_line where highway='bus_guideway' and (tunnel is null or tunnel != 'yes')
-
+SELECT way AS __geometry__ 
+FROM planet_osm_line 
+WHERE highway='bus_guideway' 
+    AND (tunnel IS NULL 
+    OR tunnel != 'yes')
