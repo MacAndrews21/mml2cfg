@@ -1,0 +1,140 @@
+features
+select way, religion,coalesce (aeroway, amenity, landuse, leisure, military, "natural", power, tourism, highway) as feature from (select way,('aeroway_' || (case when aeroway in ('apron', 'aerodrome') then aeroway else null end)) as aeroway,('amenity_' || (case when amenity in ('parking', 'university', 'college', 'school', 'hospital', 'kindergarten', 'grave_yard') then amenity else null end)) as amenity,('landuse_' || (case when landuse in ('quarry', 'vineyard', 'orchard', 'cemetery', 'grave_yard', 'residential', 'garages', 'field', 'meadow', 'grass', 'allotments', 'forest', 'farmyard', 'farm', 'farmland', 'recreation_ground', 'conservation', 'village_green', 'retail', 'industrial', 'railway', 'commercial', 'brownfield', 'landfill', 'greenfield', 'construction') then landuse else null end)) as landuse,('leisure_' || (case when leisure in ('swimming_pool', 'playground', 'park', 'recreation_ground', 'common', 'garden', 'golf_course', 'picnic_table') then leisure else null end)) as leisure,('military_' || (case when military in ('barracks', 'danger_area') then military else null end)) as military,('natural_' || (case when "natural" in ('field','beach','desert','heath','mud','grassland','wood','sand','scrub') then "natural" else null end)) as "natural",('power_' || (case when power in ('station','sub_station','substation','generator') then power else null end)) as power,('tourism_' || (case when  tourism in ('attraction', 'camp_site', 'caravan_site', 'picnic_site', 'zoo') then tourism else null end)) as tourism,('highway_' || (case when highway in ('services', 'rest_area') then highway else null end)) as highway,case when religion in ('christian','jewish') then religion else 'INT-generic'::text end as religion       from planet_osm_polygon       where landuse is not null          or leisure is not null          or aeroway in ('apron','aerodrome')          or amenity in ('parking','university','college','school','hospital','kindergarten','grave_yard')          or military in ('barracks','danger_area')          or "natural" in ('field','beach','desert','heath','mud','grassland','wood','sand','scrub')          or power in ('station','sub_station','generator')          or tourism in ('attraction','camp_site','caravan_site','picnic_site','zoo')          or highway in ('services','rest_area')       order by z_order,way_area desc      ) as landcover
+landcover_line
+select wayfrom planet_osm_linewhere man_made='cutline'
+sports_grounds
+select way,leisure,case when leisure='pitch' then 2  when leisure='track' then 1  else 0 end as prio  from planet_osm_polygon  where leisure in ('sports_centre','stadium','pitch','track')  order by z_order,prio,way_area desc
+water_lines_casing
+select way,waterway      from planet_osm_line      where waterway in ('stream','drain','ditch')        and (tunnel is null or tunnel != 'yes')      
+water_lines_low_zoom
+select way,waterway      from planet_osm_line      where waterway='river'      
+water_areas
+select way,"natural",waterway,landuse,name      from planet_osm_polygon      where (waterway in ('dock','mill_pond','riverbank','canal')         or landuse in ('reservoir','water','basin')         or "natural" in ('lake','water','land','glacier','mud'))         and building is null      order by z_order,way_area desc      
+water_areas_overlay
+select way,"natural"      from planet_osm_polygon      where "natural" in ('marsh','wetland') and building is null      order by z_order,way_area desc      
+water_lines
+select way,waterway,lock,name,tunnel      from planet_osm_line      where waterway in ('weir','river','canal','derelict_canal','stream','drain','ditch','wadi')        and (bridge is null or bridge not in ('yes','true','1','aqueduct'))      order by z_order      
+dam
+select way,name from planet_osm_line where waterway='dam'
+marinas_area
+select way from planet_osm_polygon where leisure ='marina'
+piers_area
+select way,man_made from planet_osm_polygon where man_made in ('pier','breakwater','groyne')
+piers
+select way,man_made from planet_osm_line where man_made in ('pier','breakwater','groyne')
+locks
+select way,waterway from planet_osm_point where waterway='lock_gate'
+tunnels
+select way,coalesce(('highway_' || highway), ('railway_' ||(case when railway='preserved' and service in ('spur','siding','yard') then 'INT-preserved-ssy'::text when (railway='rail' and service in ('spur','siding','yard'))  then 'INT-spur-siding-yard' when railway in ('light_rail', 'narrow_gauge', 'funicular', 'rail', 'subway', 'tram', 'spur', 'siding', 'monorail', 'platform', 'preserved', 'disused', 'construction', 'miniature', 'turntable') then railway else null end)), ('aeroway_' || aeroway)) as feature, sac_scale, horse, foot, bicycle, tracktype, case when access in ('permissive') then 'permissive'::text when access in ('destination') then 'destination'::text when access in ('no', 'private') then 'no'::text else null end as access, construction, case when service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as service, case when oneway in ('yes', '-1') and highway in ('motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','residential','unclassified','road','service','pedestrian','raceway','living_street','construction') then oneway else null end as oneway, case when layer is null then '0' else layer end as layernotnull from planet_osm_line where (highway in ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'residential', 'road', 'unclassified', 'service', 'pedestrian', 'living_street', 'raceway', 'bridleway', 'footway', 'cycleway', 'path', 'track', 'steps', 'platform', 'proposed', 'construction')  or aeroway in ('runway','taxiway') or railway in ('light_rail', 'subway', 'narrow_gauge',  'rail', 'spur', 'siding', 'preserved', 'funicular', 'tram', 'monorail', 'platform', 'miniature', 'turntable', 'disused', 'construction')) and (tunnel='yes' or tunnel='building_passage' or covered='yes') order by z_order
+citywalls
+select way from planet_osm_line where "historic"='citywalls'
+castlewalls
+select way from planet_osm_line where "historic"='castle_walls'
+castlewalls_poly
+select way from planet_osm_polygon where "historic"='castle_walls'
+landuse_overlay
+select way,landuse,leisure       from planet_osm_polygon       where (landuse = 'military') and building is null      
+line_barriers
+select way, barrier from planet_osm_line where barrier is not null
+cliffs
+select way,"natural",man_made from planet_osm_line where "natural" = 'cliff' or man_made = 'embankment'
+area_barriers
+select way,barrier from planet_osm_polygon where barrier is not null
+ferry_routes
+select way from planet_osm_line where route='ferry' 
+turning_circle_casing
+select distinct on (p.way) p.way as way,l.highway as int_tc_type,case when l.service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as int_tc_service       from planet_osm_point p       join planet_osm_line l        on ST_DWithin(p.way,l.way,0.1)       join (values        ('tertiary',1),        ('unclassified',2),        ('residential',3),        ('living_street',4),        ('service',5)       ) as v (highway,prio)        on v.highway=l.highway       where p.highway='turning_circle'       order by p.way,v.prio      
+roads
+select way,coalesce(('highway_' || highway), ('railway_' ||(case when railway in ('light_rail', 'abandoned', 'spur', 'siding', 'yard', 'narrow_gauge', 'funicular', 'rail', 'subway', 'tram', 'spur', 'siding', 'monorail', 'platform', 'preserved', 'disused', 'construction', 'miniature', 'turntable') then railway else null end)), ('aeroway_' || aeroway)) as feature, horse, foot, bicycle, tracktype, case when access in ('permissive') then 'permissive'::text when access in ('destination') then 'destination'::text when access in ('no', 'private') then 'no'::text else null end as access, construction, case when service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as service, case when oneway in ('yes', '-1') and highway in ('motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','residential','unclassified','road','service','pedestrian','raceway','living_street','construction') then oneway else null end as oneway, case when layer is null then '0' else layer end as layernotnull from planet_osm_line where (highway in ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'residential', 'road', 'unclassified', 'service', 'pedestrian', 'living_street', 'raceway', 'bridleway', 'footway', 'cycleway', 'path', 'track', 'steps', 'platform', 'proposed', 'construction')  or aeroway in ('runway','taxiway') or railway in ('light_rail', 'abandoned', 'subway', 'narrow_gauge',  'rail', 'spur', 'siding', 'preserved', 'funicular', 'tram', 'monorail', 'platform', 'miniature', 'turntable', 'disused', 'construction')) and (tunnel is null or not tunnel in ('yes','true','1')) and (bridge is null or not bridge in ('yes','true','1','viaduct')) order by z_order
+highway_area_fill
+select way,coalesce(('highway_' || (case when highway in ('cycleway','living_street','services') then 'cycleway' else null end)), ('highway_' || (case when highway in ('pedestrian') then 'pedestrian' else null end)), ('highway_' || (case when highway in ('service') then 'service' else null end)), ('highway_' || (case when highway in ('residential') then 'residential' else null end)),  ('highway_' || (case when highway in ('unclassified') then 'unclassified' else null end)), ('highway_' || (case when highway in ('footway') then 'footway'else null end)), ('highway_' || (case when highway in ('path') then 'path'else null end)), ('highway_' || (case when highway in ('track') then 'track' else null end)), ('highway_' || (case when highway in ('platform') then 'platform' else null end)), ('railway_' || (case when railway in ('platform') then 'platform' else null end)), ('aeroway_' || (case when aeroway in ('runway') then 'runway' else null end)), ('aeroway_' || (case when aeroway in ('helipad') then 'helipad' else null end)), ('aeroway_' || (case when aeroway in ('aeroway') then 'aeroway' else null end))) as feature from planet_osm_polygon       where highway in ('residential','unclassified','pedestrian','service','footway','living_street','track','path','platform','services')          or railway in ('platform')          or aeroway in ('runway','taxiway','helipad')       order by z_order,way_area desc
+buildings_lz
+select way,building,railway,amenity from planet_osm_polygon       where railway='station'          or building in ('station','supermarket')          or amenity='place_of_worship'       order by z_order,way_area desc
+highway_area_casing
+select way,coalesce(('highway_' || (case when highway in ('cycleway') then 'cycleway' else null end)),  ('highway_' || (case when highway in ('pedestrian') then 'pedestrian' else null end)),  ('highway_' || (case when highway in ('service') then 'service' else null end)),  ('highway_' || (case when highway in ('residential') then 'residential' else null end)), ('highway_' || (case when highway in ('unclassified') then 'unclassified' else null end)), ('highway_' || (case when highway in ('footway') then 'footway'else null end)), ('highway_' || (case when highway in ('path') then 'path'else null end)), ('highway_' || (case when highway in ('track') then 'track' else null end)), ('highway_' || (case when highway in ('platform') then 'platform' else null end)), ('railway_' || (case when railway in ('platform') then 'platform' else null end))) as feature from planet_osm_polygon       where highway in ('residential','unclassified','pedestrian','service','footway','track','path','platform')          or railway in ('platform')       order by z_order,way_area desc
+buildings
+select way,aeroway,        case         when building in ('garage','roof','garages','service','shed','shelter','cabin','storage_tank','tank','support','glasshouse','greenhouse','mobile_home','kiosk','silo','canopy','tent') then 'INT-light'::text         else building        end as building       from planet_osm_polygon       where (building is not null         and building not in ('no','station','supermarket','planned')         and (railway is null or railway != 'station')         and (amenity is null or amenity != 'place_of_worship'))          or aeroway = 'terminal'       order by z_order,way_area desc
+roads_fill
+select way,coalesce(('highway_' || highway), ('railway_' ||(case when railway in ('light_rail', 'abandoned', 'spur', 'siding', 'yard', 'narrow_gauge', 'funicular', 'rail', 'subway', 'tram', 'spur', 'siding', 'monorail', 'platform', 'preserved', 'disused', 'construction', 'miniature', 'turntable') then railway else null end)), ('aeroway_' || aeroway)) as feature, sac_scale, horse, foot, bicycle, tracktype, case when access in ('permissive') then 'permissive'::text when access in ('destination') then 'destination'::text when access in ('no', 'private') then 'no'::text else null end as access, construction, case when service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as service, case when oneway in ('yes', '-1') and highway in ('motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','residential','unclassified','road','service','pedestrian','raceway','living_street','construction') then oneway else null end as oneway, case when layer is null then '0' else layer end as layernotnull from planet_osm_line where (highway in ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'residential', 'road', 'unclassified', 'service', 'pedestrian', 'living_street', 'raceway', 'bridleway', 'footway', 'cycleway', 'path', 'track', 'steps', 'platform', 'proposed', 'construction')  or aeroway in ('runway','taxiway') or railway in ('light_rail', 'abandoned', 'subway', 'narrow_gauge',  'rail', 'spur', 'siding', 'preserved', 'funicular', 'tram', 'monorail', 'platform', 'miniature', 'turntable', 'disused', 'construction')) and (tunnel is null or not tunnel in ('yes','true','1')) and (bridge is null or not bridge in ('yes','true','1','viaduct')) order by z_order
+turning_circle_fill
+select distinct on (p.way) p.way as way,l.highway as int_tc_type,case when l.service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as int_tc_service       from planet_osm_point p       join planet_osm_line l        on ST_DWithin(p.way,l.way,0.1)       join (values        ('tertiary',1),        ('unclassified',2),        ('residential',3),        ('living_street',4),        ('service',5)       ) as v (highway,prio)        on v.highway=l.highway       where p.highway='turning_circle'       order by p.way,v.prio      
+aerialways
+select way,aerialway from planet_osm_line where aerialway is not null
+roads_low_zoom
+select way,coalesce(('highway_' || (case when highway is not null then highway else null end)), ('railway_' || (case when (railway='rail' and service in ('spur','siding','yard'))  then 'INT-spur-siding-yard' when railway in ('rail','tram','light_rail','funicular','narrow_gauge') then railway else null end))) as feature,tunnel       from planet_osm_roads       where highway is not null          or (railway is not null and railway!='preserved' and (service is null or service not in ('spur','siding','yard')))       order by z_order      
+waterway_bridges
+select way,name from planet_osm_line where waterway='canal' and bridge in ('yes','true','1','aqueduct') order by z_order
+bridges
+select way,coalesce(('highway_' || highway), ('railway_' ||(case when railway='preserved' and service in ('spur','siding','yard') then 'INT-preserved-ssy'::text when (railway='rail' and service in ('spur','siding','yard'))  then 'INT-spur-siding-yard' when railway in ('light_rail', 'narrow_gauge', 'funicular', 'rail', 'subway', 'tram', 'spur', 'siding', 'monorail', 'platform', 'preserved', 'disused', 'construction', 'miniature', 'turntable') then railway else null end)), ('aeroway_' || aeroway)) as feature, sac_scale, horse, foot, bicycle, tracktype, case when access in ('permissive') then 'permissive'::text when access in ('destination') then 'destination'::text when access in ('no', 'private') then 'no'::text else null end as access, construction, case when service in ('parking_aisle','drive-through','driveway') then 'INT-minor'::text else 'INT-normal'::text end as service, case when oneway in ('yes', '-1') and highway in ('motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','residential','unclassified','road','service','pedestrian','raceway','living_street','construction') then oneway else null end as oneway, case when layer is null then '0' else layer end as layernotnull from planet_osm_line where (highway in ('motorway', 'motorway_link', 'trunk', 'trunk_link', 'primary', 'primary_link', 'secondary', 'secondary_link', 'tertiary', 'tertiary_link', 'residential', 'road', 'unclassified', 'service', 'pedestrian', 'living_street', 'raceway', 'bridleway', 'footway', 'cycleway', 'path', 'track', 'steps', 'platform', 'proposed', 'construction')  or aeroway in ('runway','taxiway') or railway in ('light_rail', 'subway', 'narrow_gauge',  'rail', 'spur', 'siding', 'preserved', 'funicular', 'tram', 'monorail', 'platform', 'miniature', 'turntable', 'disused', 'construction')) and bridge in ('yes','true','1','viaduct') and (layer is null or (layer in ('0','1','2','3','4','5'))) order by layernotnull, z_order
+trams
+select way,railway,bridge from planet_osm_line where railway='tram' and (tunnel is null or tunnel != 'yes')
+guideways
+select way from planet_osm_line where highway='bus_guideway' and (tunnel is null or tunnel != 'yes')
+admin_01234
+select way,admin_level       from planet_osm_roads       where "boundary"='administrative'         and admin_level in ('0','1','2','3','4')       
+admin_5678
+select way,admin_level       from planet_osm_roads       where "boundary"='administrative'         and admin_level in ('5','6','7','8')       
+admin_other
+select way,admin_level       from planet_osm_roads       where "boundary"='administrative'         and admin_level in ('9', '10')       
+power_minorline
+select way from planet_osm_line where "power"='minor_line'
+power_line
+select way from planet_osm_line where "power"='line'
+placenames_large
+select way,place,name,ref       from planet_osm_point       where place in ('country','state')      
+placenames_capital
+select way,place,name,ref       from planet_osm_point       where place in ('city','town') and capital='yes'      
+placenames_medium
+select way,place,name      from planet_osm_point      where place in ('city','town')        and (capital is null or capital != 'yes')      
+placenames_small
+select way,place,name      from planet_osm_point      where place in ('suburb','village','hamlet','neighbourhood','locality','isolated_dwelling','farm')      
+stations
+select way,name,railway,aerialway,disused      from planet_osm_point      where railway in ('station','halt','tram_stop','subway_entrance')         or aerialway='station'      
+stations_poly
+select way,name,railway,aerialway,disused      from planet_osm_polygon      where railway in ('station','halt','tram_stop')         or aerialway='station'      
+glaciers_text
+select way,name,way_area      from planet_osm_polygon      where "natural"='glacier' and building is null      order by way_area desc      
+amenity_symbols
+select *      from planet_osm_point      where aeroway in ('aerodrome','helipad')         or barrier in ('bollard','gate','lift_gate','block')         or highway in ('mini_roundabout','gate')         or man_made in ('lighthouse','power_wind','windmill','mast')         or (power='generator' and ("generator:source"='wind' or power_source='wind'))         or "natural" in ('peak','volcano','spring','tree','cave_entrance')         or railway='level_crossing'      
+amenity_symbols_poly
+select *      from planet_osm_polygon      where aeroway in ('aerodrome','helipad')         or barrier in ('bollard','gate','lift_gate','block')         or highway in ('mini_roundabout','gate')         or man_made in ('lighthouse','power_wind','windmill','mast')         or (power='generator' and ("generator:source"='wind' or power_source='wind'))         or "natural" in ('peak','volcano','spring','tree')         or railway='level_crossing'      
+amenity_points
+select way,amenity,shop,tourism,highway,man_made,access,religion,waterway,lock,historic,leisure      from planet_osm_point      where amenity is not null         or shop is not null         or tourism in ('alpine_hut','camp_site','picnic_site','caravan_site','guest_house','hostel','hotel','motel','museum','viewpoint','bed_and_breakfast','information','chalet')         or highway in ('bus_stop','traffic_signals','ford')         or man_made in ('mast','water_tower')         or historic in ('memorial','archaeological_site')         or waterway='lock'         or lock='yes'         or leisure in ('playground','slipway','picnic_table')      
+amenity_points_poly
+select way,amenity,shop,tourism,highway,man_made,access,religion,waterway,lock,historic,leisure      from planet_osm_polygon      where amenity is not null         or shop is not null         or tourism in ('alpine_hut','camp_site','picnic_site','caravan_site','guest_house','hostel','hotel','motel','museum','viewpoint','bed_and_breakfast','information','chalet')         or highway in ('bus_stop','traffic_signals')         or man_made in ('mast','water_tower')         or historic in ('memorial','archaeological_site')         or leisure in ('playground', 'picnic_table')      
+power_towers
+select way from planet_osm_point where power='tower'
+power_poles
+select way from planet_osm_point where power='pole'
+roads_text_ref_low_zoom
+select way,highway,ref,char_length(ref) as length       from planet_osm_roads       where highway in ('motorway','trunk','primary','secondary')         and ref is not null         and char_length(ref) between 1 and 8      
+highway_junctions
+select way,ref,name      from planet_osm_point      where highway='motorway_junction'     
+roads_text_ref
+select way,coalesce(highway,aeroway) as highway,ref,char_length(ref) as length,       case when bridge in ('yes','true','1') then 'yes'::text else 'no'::text end as bridge       from planet_osm_line       where (highway is not null or aeroway is not null)         and ref is not null         and char_length(ref) between 1 and 8      
+roads_area_text_name
+select way, highway, name       from planet_osm_polygon       where highway='pedestrian'         and name is not null      
+roads_text_name
+select way, highway, name       from planet_osm_line       where highway in ('motorway','motorway_link','trunk','trunk_link','primary','primary_link','secondary','secondary_link','tertiary','tertiary_link','residential','unclassified','road','service','pedestrian','raceway','living_street', 'construction','proposed','road', 'minor', 'living street', 'unsurfaced', 'track', 'byway', 'footway', 'bridleway', 'path', 'cycleway')          and name is not null      
+paths_text_name
+select way, highway, name       from planet_osm_line       where highway in ('bridleway', 'footway', 'cycleway', 'path', 'track', 'steps')          and name is not null      
+text
+select way,amenity,shop,access,leisure,landuse,man_made,"natural",place,tourism,ele,name,ref,military,aeroway,waterway,historic,NULL as way_area       from planet_osm_point       where amenity is not null          or shop in ('supermarket','bakery','clothes','fashion','convenience','doityourself','hairdresser','department_store','butcher','car','car_repair','bicycle','florist')          or leisure is not null          or landuse is not null          or tourism is not null          or "natural" is not null          or man_made in ('lighthouse','windmill')          or place='island'          or military='danger_area'          or aeroway='gate'          or waterway='lock'          or historic in ('memorial','archaeological_site')      
+text_poly
+select way,aeroway,shop,access,amenity,leisure,landuse,man_made,"natural",place,tourism,NULL as ele,name,ref,military,waterway,historic,way_area       from planet_osm_polygon       where amenity is not null          or shop in ('supermarket','bakery','clothes','fashion','convenience','doityourself','hairdresser','department_store', 'butcher','car','car_repair','bicycle')          or leisure is not null          or landuse is not null          or tourism is not null          or "natural" is not null          or man_made in ('lighthouse','windmill')          or place='island'          or military='danger_area'          or historic in ('memorial','archaeological_site')      
+building_text
+select name, way, way_area from planet_osm_polygon where building is not null  and building not in ('no','station','supermarket')
+interpolation
+select way from planet_osm_line where "addr:interpolation" is not null
+housenumbers
+select way,"addr:housenumber" from planet_osm_polygon where "addr:housenumber" is not null and building is not null       union       select way,"addr:housenumber" from planet_osm_point where "addr:housenumber" is not null      
+housenames
+select way,"addr:housename" from planet_osm_polygon where "addr:housename" is not null and building is not null       union       select way,"addr:housename" from planet_osm_point where "addr:housename" is not null      
+water_lines_text
+select way,waterway,lock,name,tunnel      from planet_osm_line      where waterway in ('weir','river','canal','derelict_canal','stream','drain','ditch','wadi')       order by z_order      
+admin_text
+select way, name, admin_level from planet_osm_polygon where "boundary" = 'administrative' and admin_level in ('0','1','2','3','4','5','6','7','8','9','10')
+national_park_boundaries
+select way,way_area,name,boundary from planet_osm_polygon where (boundary='national_park' or leisure='nature_reserve') and building is null
+theme_park
+select way,name,tourism from planet_osm_polygon where tourism='theme_park'
