@@ -113,7 +113,7 @@ layerList = (
               #, "stations_poly"
              )
 
-cfg = open('vector/TileStache-kmt/tilstache.cfg', 'w')
+cfg = open('vector/TileStache-kmt/tilestache.cfg', 'w')
 #cfg = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg', 'w')
  
 # start cfg
@@ -203,12 +203,12 @@ cfg.write('}')
 cfg.write('}')
 cfg.close()
 
-inputFile = open('vector/TileStache-kmt/tilstache.cfg')
+inputFile = open('vector/TileStache-kmt/tilestache.cfg')
 #inputFile = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg')
 inputJson = json.load(inputFile) 
 inputFile.close()
 
-outputFile = open('vector/TileStache-kmt/tilstache.cfg', 'w')
+outputFile = open('vector/TileStache-kmt/tilestache.cfg', 'w')
 #outputFile = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg', 'w')
 json.dump(inputJson, outputFile, sort_keys = False, indent = 4)
 outputFile.close()
