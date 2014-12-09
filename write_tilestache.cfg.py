@@ -34,11 +34,11 @@ def createFileNameList(folderPath):
 
 
     return fileNameList
-fileNameList = createFileNameList('Projekte/create_db/python/pgsql-queries/')
+fileNameList = createFileNameList('vector/TileStache-kmt/queries/')
 
 """ 
     this list define the layers in the tilestache.cfg
-    if the line is commented, the layer is shown
+    if the line is commented, the layer is not shown
 """
 layerList = ( 
              "admin_01234"
@@ -113,7 +113,7 @@ layerList = (
               #, "stations_poly"
              )
 
-cfg = open('Projekte/create_db/python/cfg/tilstache__.cfg', 'w')
+cfg = open('vector/TileStache-kmt/tilstache.cfg', 'w')
 #cfg = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg', 'w')
  
 # start cfg
@@ -203,12 +203,12 @@ cfg.write('}')
 cfg.write('}')
 cfg.close()
 
-inputFile = open('Projekte/create_db/python/cfg/tilstache__.cfg')
+inputFile = open('vector/TileStache-kmt/tilstache.cfg')
 #inputFile = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg')
 inputJson = json.load(inputFile) 
 inputFile.close()
 
-outputFile = open('Projekte/create_db/python/cfg/tilstache_pretty_json.cfg', 'w')
+outputFile = open('vector/TileStache-kmt/tilstache.cfg', 'w')
 #outputFile = open('sftp://komoot@komoot.koding.io/home/komoot/vector/tilestache__.cfg', 'w')
 json.dump(inputJson, outputFile, sort_keys = False, indent = 4)
 outputFile.close()

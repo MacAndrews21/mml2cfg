@@ -1,6 +1,6 @@
 import re
 
-url = "Projekte/mml2cfg/"
+url = "vector/mml2cfg/"
 """ 1.  seperate sql queries form project.mml"""
 mml = open(url + 'mml/project.mml')
 lines = mml.readlines()
@@ -32,7 +32,7 @@ for line in lines:
     #print line
     if 'select' not in line:
         #line
-        project = open(url + 'pgsql-queries/' + line.strip() + '.pgsql', 'w')
+        project = open('vector/TileStache-kmt/queries/' + line.strip() + '.pgsql', 'w')
         
         
     if 'select' in line:
