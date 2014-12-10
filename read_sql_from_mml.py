@@ -32,15 +32,15 @@ for line in lines:
     #print line
     if 'select' not in line:
         #line
-        project = open('vector/TileStache-kmt/queries/' + line.strip() + '.pgsql', 'w')
+        project = open('vector/TileStache/queries/' + line.strip() + '.pgsql', 'w')
         
         
     if 'select' in line:
         #print 'ok'
         line = re.sub('\s+', ' ', line).strip()
-        line = line.replace(',', ' \n        , ' )
-        #line = line.split(' ', 1)
-        line = line.replace(' way ', ' way AS __geometry__ ' )
+        line = line.replace(',', ' , ' )
+        # line = line.split(' ', 1)
+        line = line.replace(' way ', ' way AS __geometry__ ', 1)
         
         line = line.replace('select ', 'SELECT ')
         line = line.replace(' from ', ' \nFROM ')
@@ -69,15 +69,42 @@ for line in lines:
         line = line.replace(' between ', ' BETWEEN ')
         
         
-        se = line.find('SELECT')# + len('SELECT')
-        fr = line.find('FROM')
-        wh = line.find('WHERE')
-        #print se
-        #print fr
-        #print wh
-        #print line
+        # se = line.find('SELECT')# + len('SELECT')
+        # fr = line.find('FROM')
+        # wh = line.find('WHERE')
+
+        # print se
+        # print fr
+        # print wh
+        # print line
+
+        # line = line.replace('select ', 'SELECT ')
+        # line = line.replace(' from ', ' FROM ')
+        # line = line.replace(' where ', ' WHERE ')
+        # line = line.replace(' and ', ' AND ')
+        # line = line.replace(' is ', ' IS ')
+        # line = line.replace(' in ', ' IN ')
+        # line = line.replace(' as ', ' AS ')
+        # line = line.replace(' not ', ' NOT ')
+        # line = line.replace(' null ', ' NULL ')
+        # line = line.replace(' null', ' NULL')
+        # line = line.replace(' or ', ' OR ')
+        # line = line.replace(' order ', ' ORDER ')
+        # line = line.replace(' by ', ' BY ')
+        # line = line.replace(' case ', ' CASE ')
+        # line = line.replace('(case ', '(CASE ')
+        # line = line.replace(' when ', ' WHEN ')
+        # line = line.replace(' then ', ' THEN ')
+        # line = line.replace(' desc ', ' DESC ')
+        # line = line.replace(' desc', ' DESC')
+        # line = line.replace(' asc ', ' ASC ')
+        # line = line.replace(' asc', ' ASC')
+        # line = line.replace(' coalesce', ' COALESCE')
         
+        # line = line.replace(' union ', ' UNION ')
+        # line = line.replace(' between ', ' BETWEEN ')
         
+
         #project.write(line + '\n')
         #if 'ORDER' in line:
 	    #order = line.find('ORDER')
