@@ -1,6 +1,6 @@
 SELECT way AS __geometry__ 
         , 
-COALESCE(('highway_' || highway) 
+  COALESCE(('highway_' || highway) 
         ,  ('railway_' ||
   (CASE
   WHEN railway IN ('light_rail' 

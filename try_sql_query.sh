@@ -28,12 +28,13 @@ port="5432"
 # dataPath="faroe-islands-latest.osm.pbf"
 export PGPASSWORD=$password
 
-# echo "Please type in your postgres user password:"
-createdb -U $username -h $host -p $port $database
-
-# echo "Please type in your postgres user password:"
-psql -U $username -h $host -p $port -d $database -c 'CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS hstore;'
-
-# echo "Please type in your postgres user password:"
-# osm2pgsql -c --cache-strategy sparse -C 750 -U $username -H $host -P $port -W -S $stylePath -d $database -k $dataPath 
-osm2pgsql -c --cache-strategy sparse -C 750 -U $username -H $host -P $port -S $stylePath -d $database -k $dataPath 
+# # echo "Please type in your postgres user password:"
+# createdb -U $username -h $host -p $port $database
+# 
+# # echo "Please type in your postgres user password:"
+# psql -U $username -h $host -p $port -d $database -c 'CREATE EXTENSION IF NOT EXISTS postgis; CREATE EXTENSION IF NOT EXISTS hstore;'
+psql -U $username -h $host -p $port -d $database 
+# 
+# # echo "Please type in your postgres user password:"
+# # osm2pgsql -c --cache-strategy sparse -C 750 -U $username -H $host -P $port -W -S $stylePath -d $database -k $dataPath 
+# osm2pgsql -c --cache-strategy sparse -C 750 -U $username -H $host -P $port -S $stylePath -d $database -k $dataPath 

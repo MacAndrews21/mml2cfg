@@ -1,6 +1,6 @@
 SELECT way AS __geometry__ 
         , 
-COALESCE(('highway_' || 
+  COALESCE(('highway_' || 
   (CASE
   WHEN highway IN ('cycleway')
   THEN 'cycleway' else NULL end)) 

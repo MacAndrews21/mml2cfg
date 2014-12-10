@@ -1,6 +1,6 @@
 SELECT way AS __geometry__ 
         , 
-COALESCE(highway 
+  COALESCE(highway 
         , aeroway) AS highway 
         , ref 
         , char_length(ref) AS length 

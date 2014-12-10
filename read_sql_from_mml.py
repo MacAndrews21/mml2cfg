@@ -40,7 +40,7 @@ for line in lines:
         line = re.sub('\s+', ' ', line).strip()
         line = line.replace(',', ' \n        , ' )
         #line = line.split(' ', 1)
-        line = line.replace(' way ', ' way AS __geometry__ ' )
+        line = line.replace(' way ', ' way AS __geometry__ ', 1 )
         
         line = line.replace('select ', 'SELECT ')
         line = line.replace(' from ', ' \nFROM ')
@@ -63,7 +63,7 @@ for line in lines:
         line = line.replace(' desc', ' DESC')
         line = line.replace(' asc ', ' ASC ')
         line = line.replace(' asc', ' ASC')
-        line = line.replace(' coalesce', ' \nCOALESCE')
+        line = line.replace(' coalesce', ' \n  COALESCE')
         
         line = line.replace(' union ', ' \nUNION ')
         line = line.replace(' between ', ' BETWEEN ')

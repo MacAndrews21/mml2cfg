@@ -1,7 +1,7 @@
 SELECT way AS __geometry__ 
         ,  religion 
         ,  
-COALESCE (aeroway 
+  COALESCE (aeroway 
         ,  amenity 
         ,  landuse 
         ,  leisure 
@@ -10,7 +10,7 @@ COALESCE (aeroway
         ,  power 
         ,  tourism 
         ,  highway) AS feature 
-FROM ( SELECT way AS __geometry__ 
+FROM ( SELECT way 
         ,  ('aeroway_' || 
   (CASE
   WHEN aeroway IN ('apron' 
