@@ -35,6 +35,17 @@ def createFileNameList(folderPath):
 
     return fileNameList
 
+def zoomSteps(x):
+    # x is the zoomlevel where the data should be displayed
+    zl = 18
+    
+    for n in range(0, x):
+        cfg.write('null,')
+    
+    for m in range(0, (zl - x - 1)):
+        cfg.write('"queries/' + i['name'] + '.pgsql",')
+    cfg.write('"queries/' + i['name'] + '.pgsql"')
+
 local_url = 'Projekte/mml2cfg/'
 server_url = 'Projekte/mml2cfg/'
 
@@ -43,12 +54,16 @@ url = local_url
 #fileNameList = createFileNameList('vector/TileStache/queries/')
 fileNameList = createFileNameList(url + 'queries/')
 
+""" define first zoom level """
+zoomsteps = 10
+    
 """ 
     this list define the layers in the tilestache.cfg
     if the line is commented, the layer is not shown
     # the 'default' string is important, because 
     # elsewise  the layerList is a list of characters, not a list of 'stringchains'
 """
+
 layerList = ( 
               # "admin_01234"
               #, "admin_5678"
@@ -99,10 +114,10 @@ layerList = (
               #, "roads"
               #, "roads_area_text_name"
                "roads_fill"
-              #, "roads_low_zoom"
-              #, "roads_text_name"
-              # , "roads_text_ref"
-              #, "roads_text_ref_low_zoom"
+              , "roads_low_zoom"
+              , "roads_text_name"
+              , "roads_text_ref"
+              , "roads_text_ref_low_zoom"
               #, "sports_grounds"
               #, "stations"
               #, "stations_poly"
@@ -187,16 +202,11 @@ cfg.write('},')
 # cfg.write('}')
 # write loop
 
+    
+  
 countObjects = 2
 for i in fileNameList:
     if i['name'] in layerList:
-        # for n in range(0, len(layerList)):
-            # print layerList[n], n
-            # if len(i['name']) == len(layerList[n]):
-
-        # cfg.write(',')
-       
-        
         cfg.write('"' + i['name'] + '": {')
         cfg.write('"allowed origin": "*",')
         cfg.write('"provider": {')
@@ -209,14 +219,14 @@ for i in fileNameList:
         cfg.write('"database": "gis"')
         cfg.write('},')
         cfg.write('"queries": [')
-        for x in range(0,12):
-            cfg.write('null,')
-            # cfg.write(', ')
+        #for x in range(0,12):
+            #cfg.write('null,')
     
-        for z in range(0,6):
-            cfg.write('"queries/' + i['name'] + '.pgsql",')
-            # cfg.write(', ')
-        cfg.write('"queries/' + i['name'] + '.pgsql"')
+        #for z in range(0,6):
+            #cfg.write('"queries/' + i['name'] + '.pgsql",')
+            ## cfg.write(', ')
+        #cfg.write('"queries/' + i['name'] + '.pgsql"')
+        zoomSteps(zoom_steps, i['name'])
         cfg.write(']')
         # cfg.write('"queries": ["' + i['query'] + '"]')
         # cfg.write(',')
@@ -227,7 +237,7 @@ for i in fileNameList:
         
         #print countObjects, 'count'
 	#print len(layerList), 'len'
-        if 2 <= countObjects < len(layerList) :
+        if 2 <= countObjects < len(layerList):
 	    #print ','
 	    cfg.write(',')
 	    
