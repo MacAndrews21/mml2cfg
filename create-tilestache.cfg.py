@@ -92,12 +92,30 @@ cfg.write('}')
 cfg.write('}')
 cfg.write('},')
 # write custom style layer
-  
+cfg.write('"default": {')
+cfg.write('"allowed origin": "*",')
+cfg.write('"provider": {')
+cfg.write('"class": "TileStache.Goodies.VecTiles:Provider",')
+cfg.write('"kwargs": {')
+cfg.write('"dbinfo": {')
+cfg.write('"host": "localhost",')
+cfg.write('"port": 5432,')
+cfg.write('"user": "postgres",')
+cfg.write('"database": "gis"')
+cfg.write('},')
+
+cfg.write('"queries": [')
+cfg.write('null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null')
+cfg.write(']')
+
+cfg.write('}')
+cfg.write('}')
+cfg.write('}') 
 countObjects = 2
 for i in fileNameList:
     name = i['name'].replace('-','_')
     if name in layerNameList:
-        cfg.write('"' + name + '": {')
+        cfg.write(',"' + name + '": {')
         cfg.write('"allowed origin": "*",')
         cfg.write('"provider": {')
         cfg.write('"class": "TileStache.Goodies.VecTiles:Provider",')
@@ -117,12 +135,12 @@ for i in fileNameList:
         cfg.write('}')
         cfg.write('}')
         
-    if 2 <= countObjects < len(layerList):
 
-        cfg.write(',')
+        #if 2 <= len(layerList):
+            #cfg.write(',')
  
         
-        countObjects += 1
+        #countObjects += 1
         
         
   
