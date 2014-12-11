@@ -1,6 +1,9 @@
 import re
+import functions as func
 
-url = "vector/mml2cfg/"
+""" local & server switch """
+url, querie_url, config_url = func.getURL()
+
 """ 1.  seperate sql queries form project.mml"""
 mml = open(url + 'mml/project.mml')
 lines = mml.readlines()
@@ -32,7 +35,7 @@ for line in lines:
     #print line
     if 'select' not in line:
         #line
-        project = open('vector/TileStache/queries/' + line.strip() + '.pgsql', 'w')
+        project = open(querie_url + 'queries/' + line.strip() + '.pgsql', 'w')
         
         
     if 'select' in line:
@@ -68,56 +71,7 @@ for line in lines:
         line = line.replace(' union ', ' \nUNION ')
         line = line.replace(' between ', ' BETWEEN ')
         
-        
-        # se = line.find('SELECT')# + len('SELECT')
-        # fr = line.find('FROM')
-        # wh = line.find('WHERE')
-
-        # print se
-        # print fr
-        # print wh
-        # print line
-
-        # line = line.replace('select ', 'SELECT ')
-        # line = line.replace(' from ', ' FROM ')
-        # line = line.replace(' where ', ' WHERE ')
-        # line = line.replace(' and ', ' AND ')
-        # line = line.replace(' is ', ' IS ')
-        # line = line.replace(' in ', ' IN ')
-        # line = line.replace(' as ', ' AS ')
-        # line = line.replace(' not ', ' NOT ')
-        # line = line.replace(' null ', ' NULL ')
-        # line = line.replace(' null', ' NULL')
-        # line = line.replace(' or ', ' OR ')
-        # line = line.replace(' order ', ' ORDER ')
-        # line = line.replace(' by ', ' BY ')
-        # line = line.replace(' case ', ' CASE ')
-        # line = line.replace('(case ', '(CASE ')
-        # line = line.replace(' when ', ' WHEN ')
-        # line = line.replace(' then ', ' THEN ')
-        # line = line.replace(' desc ', ' DESC ')
-        # line = line.replace(' desc', ' DESC')
-        # line = line.replace(' asc ', ' ASC ')
-        # line = line.replace(' asc', ' ASC')
-        # line = line.replace(' coalesce', ' COALESCE')
-        
-        # line = line.replace(' union ', ' UNION ')
-        # line = line.replace(' between ', ' BETWEEN ')
-        
-
-        #project.write(line + '\n')
-        #if 'ORDER' in line:
-	    #order = line.find('ORDER')
-	    #project.write(line[:fr] + '\n')
-	    #project.write(line[fr:wh] + '\n')
-	    #project.write(line[wh:order] + '\n')
-	    #project.write(line[order:] + '\n')
-	    
-	    
-	#elif 'ORDER' not in line:
-        #project.write(line[:fr] + '\n')
-        #project.write(line[fr:wh] + '\n')
-        #project.write(line[wh:] + '\n')
+ 
         project.write(line + '\n')
         project.close()
     
