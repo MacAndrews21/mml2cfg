@@ -1,10 +1,8 @@
 import simplejson as json
+import functions as func
 
-local_url = 'Projekte/mml2cfg/'
-server_url = 'Projekte/mml2cfg/'
-
-url = local_url
-#url = server_url
+""" local & server switch """
+url, querie_url, config_url = func.getURL()
 
 
 
