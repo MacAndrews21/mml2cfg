@@ -17,12 +17,12 @@ def getURL():
     server_query_url  = 'vector/TileStache/'
     server_config_url = 'vector/'
     """ local & server switch """
-    url        = local_url
-    querie_url = local_query_local
-    config_url = local_config_url 
-    #url        = server_url
-    #querie_url = server_query_url
-    #config_url = server_config_url 
+    #url        = local_url
+    #querie_url = local_query_local
+    #config_url = local_config_url 
+    url        = server_url
+    querie_url = server_query_url
+    config_url = server_config_url 
 
     return url, querie_url, config_url
 
