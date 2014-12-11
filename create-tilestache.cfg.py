@@ -8,7 +8,11 @@ try:
     import functions as func
 except:
     print 'nope'
-    
+
+""" local & server switch """
+url, querie_url, config_url = func.getURL()
+
+   
 def zoomSteps(name):
     # x is the zoomlevel where the data should be displayed
     zl = 18
@@ -27,13 +31,11 @@ def zoomSteps(name):
     cfg.write('"queries/' + i['name'] + '.pgsql"')
     
 
-local_url = 'Projekte/mml2cfg/'
-server_url = 'Projekte/mml2cfg/'
 
-#url = local_url
-url = server_url
-#fileNameList = createFileNameList('vector/TileStache/queries/')
-fileNameList = func.createFileNameList(url + 'queries/')
+
+
+""" create fileNameList """
+fileNameList = func.createFileNameList(querie_url + 'queries/')
  
 """ 
     this list define the layers in the tilestache.cfg
@@ -44,7 +46,7 @@ fileNameList = func.createFileNameList(url + 'queries/')
 import layer_config as lc
 layerList = lc.layerList
 
-cfg = open(url + 'tilestache.cfg', 'w')
+cfg = open(config_url + 'tilestache.cfg', 'w')
 
 # start cfg
 cfg.write('{')
@@ -115,7 +117,7 @@ for i in fileNameList:
         cfg.write('}')
         cfg.write('}')
         
-        if 2 <= countObjects < len(layerList):
+    if 2 <= countObjects < len(layerList):
 
         cfg.write(',')
  
@@ -136,11 +138,11 @@ cfg.write('}')
 cfg.write('}')
 cfg.close()
 
-inputFile = open(url + 'tilestache.cfg')
+inputFile = open(config_url + 'tilestache.cfg')
 inputJson = json.load(inputFile) 
 inputFile.close()
 
-outputFile = open(url + 'tilestache.cfg', 'w')
+outputFile = open(config_url + 'tilestache.cfg', 'w')
 json.dump(inputJson, outputFile, sort_keys = True, indent = 4)
 outputFile.close()
 

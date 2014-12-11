@@ -1,15 +1,14 @@
 import project 
 import functions as func
 
+""" local & server switch """
+url, querie_url, config_url = func.getURL()
+
+
+""" load project.mml as python dictionary"""
 mml = project.project 
-   
     
-    
-#print project.keys()
-#print project['Layer'][4]['name']
-#print project['Layer'][4]['Datasource']
-#print project['Layer'][4]['Datasource']['table'] # .keys()
-url = "Projekte/mml2cfg/"
+
 p = open(url + 'mml/project_temp.txt', 'w')
 for i in range(0, len(mml['Layer'])):
     p.write(mml['Layer'][i]['name'])
