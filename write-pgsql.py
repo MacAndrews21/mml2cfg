@@ -5,11 +5,13 @@ mml = project.project
    
     
     
-#print project.keys()
-#print project['Layer'][4]['name']
-#print project['Layer'][4]['Datasource']
-#print project['Layer'][4]['Datasource']['table'] # .keys()
-url = "Projekte/mml2cfg/"
+local_url = 'Projekte/mml2cfg/'
+server_url = 'vector/mml2cfg/'
+
+#url = local_url
+url = server_url
+
+
 p = open(url + 'mml/project_temp.txt', 'w')
 for i in range(0, len(mml['Layer'])):
     p.write(mml['Layer'][i]['name'])
