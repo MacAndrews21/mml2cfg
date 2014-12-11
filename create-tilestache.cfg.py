@@ -73,16 +73,16 @@ cfg.write('"kwargs": {')
 cfg.write('"names": [')
 countNames = 2
 layerNameList = func.searchLayerList(layerList)
-
+cfg.write('"default"')
 for i in fileNameList:
     name = i['name'].replace('-','_')
     if name in layerNameList:
-        cfg.write('"' + name + '"')
+        cfg.write(',"' + name + '"')
         print name
-        if 2 <= countNames < len(layerList) :
-	    #print ','
-	    cfg.write(',')
-	countNames += 1
+        #if 2 <= countNames < len(layerList) :
+	    ##print ','
+	    #cfg.write(',')
+	#countNames += 1
 
 # end write layer names
 cfg.write(']')
