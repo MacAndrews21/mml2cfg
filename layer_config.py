@@ -1,4 +1,4 @@
-layerList = ( "default"
+layerList = ( {"default":{"zoom" : 10}}
               #, {"amenity_points":{"zoom" : 10}}
               #, {"water_lines_low_zoom":{"zoom" : 10}}
               #, {"landcover":{"zoom" : 10}}
@@ -62,8 +62,8 @@ layerList = ( "default"
               #, {"castlewalls":{"zoom" : 10}}
               #, {"buildings":{"zoom" : 10}}
               #, {"world":{"zoom" : 10}}
-              #, {"ferry_routes":{"zoom" : 10}}
-              #, {"bridges":{"zoom" : 10}}
+              , {"ferry_routes":{"zoom" : 10}}
+              , {"bridges":{"zoom" : 10}}
               #, {"sports_grounds":{"zoom" : 10}}
               #, {"marinas_area":{"zoom" : 10}}
               #, {"paths_text_name":{"zoom" : 10}}

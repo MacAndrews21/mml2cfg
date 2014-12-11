@@ -54,9 +54,8 @@ def createFileNameList(folderPath):
 def writeLayerConfig(fileNameList, url):
     fileNameList = createFileNameList(url + 'queries/')
     config = open(url + 'layer_config.py', 'w')
-    config.write('layerList = ( "default"\n')
+    config.write('layerList = ( {"default":{"zoom" : 10}}\n')
     for i in fileNameList:
-        
         config.write('              #, {"' + i['name'].replace('-', '_') + '":{"zoom" : 10}}\n')
     config.write(')')
     config.close()
