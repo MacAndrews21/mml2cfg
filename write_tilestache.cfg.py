@@ -30,8 +30,8 @@ def zoomSteps(name):
 local_url = 'Projekte/mml2cfg/'
 server_url = 'Projekte/mml2cfg/'
 
-url = local_url
-#url = server_url
+#url = local_url
+url = server_url
 #fileNameList = createFileNameList('vector/TileStache/queries/')
 fileNameList = func.createFileNameList(url + 'queries/')
  
