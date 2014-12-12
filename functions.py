@@ -15,7 +15,7 @@ def getURL():
     
     server_url        = 'vector/mml2cfg/'
     server_query_url  = 'vector/TileStache/'
-    server_config_url = 'vector/'
+    server_config_url = 'vector/TileStache/'
     """ local & server switch """
     #url        = local_url
     #querie_url = local_query_local
