@@ -35,7 +35,7 @@ def zoomSteps(name):
 
 
 """ create fileNameList """
-fileNameList = func.createFileNameList(querie_url + 'queries/')
+fileNameList = func.createFileNameList(querie_url)
  
 """ 
     this list define the layers in the tilestache.cfg
@@ -73,7 +73,8 @@ cfg.write('"kwargs": {')
 cfg.write('"names": [')
 countNames = 2
 layerNameList = func.searchLayerList(layerList)
-cfg.write('"default"')
+cfg.write('"aaa_default"')
+
 for i in fileNameList:
     name = i['name'].replace('-','_')
     if name in layerNameList:
@@ -92,7 +93,7 @@ cfg.write('}')
 cfg.write('}')
 cfg.write('},')
 # write custom style layer
-cfg.write('"default": {')
+cfg.write('"aaa_default": {')
 cfg.write('"allowed origin": "*",')
 cfg.write('"provider": {')
 cfg.write('"class": "TileStache.Goodies.VecTiles:Provider",')

@@ -9,20 +9,14 @@ except:
     print 'nope'
 
 def getURL():
-    local_url         = 'Projekte/mml2cfg/'
-    local_query_local = 'Projekte/mml2cfg/'
-    local_config_url  = 'Projekte/mml2cfg/'
+    url        = ''
+    querie_url = '../TileStache/queries/'
+    config_url = '../TileStache/'
     
-    server_url        = 'vector/mml2cfg/'
-    server_query_url  = 'vector/TileStache/'
-    server_config_url = 'vector/TileStache/'
-    """ local & server switch """
-    #url        = local_url
-    #querie_url = local_query_local
-    #config_url = local_config_url 
-    url        = server_url
-    querie_url = server_query_url
-    config_url = server_config_url 
+    if not os.path.exists(querie_url):
+        os.makedirs(querie_url)
+    else:
+        pass
 
     return url, querie_url, config_url
 
@@ -52,9 +46,11 @@ def createFileNameList(folderPath):
     return fileNameList
 
 def writeLayerConfig(fileNameList, url):
-    fileNameList = createFileNameList(url + 'queries/')
-    config = open(url + 'layer_config.py', 'w')
-    config.write('layerList = ( {"default":{"zoom" : 10}}\n')
+    fileNameList = createFileNameList(url)
+    fileNameList.sort()
+    config = open('layer_config.py', 'w')
+    config.write('layerList = ( {"aaa_default":{"zoom" : 10}}\n')
+    
     for i in fileNameList:
         config.write('              #, {"' + i['name'].replace('-', '_') + '":{"zoom" : 10}}\n')
     config.write(')')
